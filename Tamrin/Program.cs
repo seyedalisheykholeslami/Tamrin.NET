@@ -10,16 +10,19 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IRepo<Person>, PersonRepo>();
 builder.Services.AddScoped<PersonService>();
+builder.Services.AddScoped<AuthService>();
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwaggerUI();
+   
     app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
+app.UseMiddleware<AuthorizationMiddleware>();
 app.UseHttpsRedirection();
-
+app.MapControllers();
 app.Run();

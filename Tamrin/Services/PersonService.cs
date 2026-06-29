@@ -10,55 +10,44 @@ public class PersonService(IRepo<Person> repo)
 {
     
      static int _id = 0;
-    public OperationResult Insert(PersonDto model)
+    public void Insert(PersonDto model)
     {
         
         var person = model.InsertDtoToPerson();
         person.Id = ++_id;
-        var result = person.PersonValidator();
-        if (result.IsSuccess)
+        person.PersonValidator();
             repo.Insert(person);
-        return result;
+        
         
 
     }
 
-    public OperationResult Update(int id, PersonDto model)
+    public void Update(int id, PersonDto model)
     {
         var person = model.UpdateDtoToPerson(id);
-        var result = person.PersonValidator();
-        if (result.IsSuccess)
+         person.PersonValidator();
             repo.Update(person);
-        return result;
     }
 
-    public OperationResult Delete(int id)
+    public void Delete(int id)
     {
         var person = repo.GetById(id);
-        if (person != null)
-        {
-            repo.Delete(person);
-            return OperationResult.Success();
-        }
-        else
-        {
-            return OperationResult.Feilure("کاربر یافت نشد");
-        }
+        if (person == null)
+            throw new UnauthorizedAccessException("کاربر پیدا نشد");
+        repo.Delete(person);
+          
+       
     }
 
-    public OperationResult<Person> GetById(int id)
+    public Person GetById(int id)
     {
         var person = repo.GetById(id);
-        if (person != null)
-            return OperationResult<Person>.Success(person);
-        else
-            return OperationResult<Person>.Feilure("کاربر پیدا نشد");
-
+        return person == null ? throw new UnauthorizedAccessException("کاربر پیدا نشد") : repo.GetById(id);
     }
 
-    public OperationResult<List<Person>> GetAll()
+    public List<Person> GetAll()
     {
-        return OperationResult<List<Person>>.Success( repo.GetAll());
+        return repo.GetAll();
 
     }
 }

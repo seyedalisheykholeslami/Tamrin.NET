@@ -12,66 +12,35 @@ public class PersonController(PersonService service) : ControllerBase
     [Route("/Persons")]
     public ActionResult<IEnumerable<Person>> GetAll()
     {
-       var result = service.GetAll();
-       if (result.IsSuccess)
-       {
-           return Ok(result.Data);
-       }
-       else
-       {
-           return StatusCode(500);
-       }
+       return Ok(service.GetAll());
+       
     }
     [HttpGet("{id:int}")]
     public ActionResult<Person> GetById(int id)
     {
-       var result = service.GetById(id);
-       if (result.IsSuccess)
-       {
-           return Ok(result.Data);
-       }
-       else
-       {
-           return StatusCode(500);
-       }
+        return Ok(service.GetById(id)); 
+       
     }
+
     [HttpPost]
     public ActionResult Insert([FromBody] PersonDto dto)
     {
-       var result = service.Insert(dto);
-       if (result.IsSuccess)
-       {
-           return Ok();
-       }
-       else
-       {
-           return StatusCode(500);
-       }
+        service.Insert(dto);
+        return Ok();
     }
+
     [HttpPut("{id:int}")]
     public ActionResult Update(int id,[FromBody] PersonDto dto)
     {
-        var result = service.Update(id,dto);
-        if (result.IsSuccess)
-        {
+        service.Update(id, dto);
             return Ok();
-        }
-        else
-        {
-            return StatusCode(500);
-        }
     }
     [HttpDelete("{id:int}")]
     public ActionResult Delete(int id)
     {
-        var result = service.Delete(id);
-        if (result.IsSuccess)
-        {
+      service.Delete(id);
+      
             return Ok();
-        }
-        else
-        {
-            return StatusCode(500);
-        }
+       
     }
 }
