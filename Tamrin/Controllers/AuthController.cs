@@ -13,7 +13,7 @@ public class AuthController(AuthService service) : ControllerBase
       var token = service.Login(login);
       Response.Cookies.Append("AuthToken", token.ToString());
       Response.Cookies.Append("Username", login.UserName);
-       return Ok();
+       return Ok(token);
    }
    
    

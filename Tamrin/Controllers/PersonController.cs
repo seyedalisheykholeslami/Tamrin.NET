@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
+using Tamrin.ActionFilter;
 using Tamrin.DTOs;
 using Tamrin.Models;
 using Tamrin.Services;
 
 namespace Tamrin.Controllers;
+
+[ServiceFilter(typeof(AuthActionFilter))]
 [ApiController]
 [Route("[controller]")]
 public class PersonController(PersonService service) : ControllerBase
